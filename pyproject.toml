@@ -1,0 +1,20 @@
+[project]
+name = "cr-crime-pipeline"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "Mike", email = "124460512+NikolasMike@users.noreply.github.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "dbt-postgres>=1.11.0",
+    "polars>=2.0.0",
+    "psycopg2-binary>=2.9.13",
+]
+
+[project.scripts]
+cr-crime-pipeline = "cr_crime_pipeline:main"
+
+[build-system]
+requires = ["uv_build>=0.13.0,<0.14.0"]
+build-backend = "uv_build"
