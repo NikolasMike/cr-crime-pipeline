@@ -219,3 +219,5 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 data/
+cr_crime/logs/
+cr_crime/target/
