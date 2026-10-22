@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: fct_monthly_crimes
+    description: "Number of police reports per month, province and crime type. Months with zero reports are absent."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - month_start
+              - province
+              - crime_type_en
+
+  - name: fct_crime_trends
+    description: "Monthly crimes per province and crime type with zeros filled in, plus year-over-year change and a 3-month moving average."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - month_start
+              - province
+              - crime_type_en
+    columns:
+      - name: month_start
+        description: "First day of the month."
+        data_tests:
+          - not_null
+      - name: crime_count
+        description: "Reports in that month. Zero when none were reported."
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+      - name: crime_count_prev_year
+        description: "crime_count of the same month one year earlier. Null for the first 12 months."
+      - name: moving_avg_3m
+        description: "Average of the current and previous two months."
+      - name: yoy_change_pct
+        description: "Percent change versus the same month last year. Null when last year had zero reports."
+      - name: is_latest_month
+        description: "True for the last month in the data. It is incomplete, so exclude it from comparisons."
