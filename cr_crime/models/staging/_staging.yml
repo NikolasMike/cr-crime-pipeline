@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: stg_police_reports
+    description: "Crimes reported to police in Costa Rica (Poder Judicial open data), cleaned. One row per report."
+    columns:
+      - name: crime_type
+        description: "Type of crime, in the original Spanish."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['HURTO', 'ASALTO', 'ROBO', 'ROBO DE VEHICULO', 'TACHA DE VEHICULO', 'HOMICIDIO']
+      - name: report_date
+        description: "Date of the report."
+        data_tests:
+          - not_null
+      - name: victim_type
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['PERSONA', 'VEHICULO', 'VIVIENDA', 'EDIFICACION']
+      - name: victim_age_group
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['MAYOR DE EDAD', 'ADULTO MAYOR', 'MENOR DE EDAD', 'DESCONOCIDO']
+      - name: province
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['SAN JOSE', 'ALAJUELA', 'HEREDIA', 'CARTAGO', 'PUNTARENAS', 'GUANACASTE', 'LIMON', 'DESCONOCIDO']
