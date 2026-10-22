@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: int_police_reports_enriched
+    description: "Police reports joined with the English crime type and split into year and month."
+    columns:
+      - name: crime_type_es
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('crime_type_translation')
+                field: crime_type_es
+      - name: crime_type_en
+        data_tests:
+          - not_null

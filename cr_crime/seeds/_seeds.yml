@@ -1,0 +1,13 @@
+version: 2
+
+seeds:
+  - name: crime_type_translation
+    description: "Spanish-to-English translation of the crime types used by the Costa Rican police."
+    columns:
+      - name: crime_type_es
+        data_tests:
+          - unique
+          - not_null
+      - name: crime_type_en
+        data_tests:
+          - not_null
