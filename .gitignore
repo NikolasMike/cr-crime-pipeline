@@ -221,3 +221,4 @@ __marimo__/
 data/
 cr_crime/logs/
 cr_crime/target/
+cr_crime/dbt_packages/
