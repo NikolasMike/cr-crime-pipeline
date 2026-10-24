@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/NikolasMike/cr-crime-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/NikolasMike/cr-crime-pipeline/actions/workflows/ci.yml)
 
+**Live documentation (dbt docs, with the lineage graph):** https://nikolasmike.github.io/cr-crime-pipeline/
+
 An end-to-end ELT pipeline built on Costa Rica's open police statistics (2015-2026): raw CSVs loaded into PostgreSQL, modelled with dbt in layers (staging, intermediate, marts), tested, documented, and analysed with window functions.
 
 I built it to practise the full analytics engineering workflow on real, messy public data, not to produce a polished dataset.
