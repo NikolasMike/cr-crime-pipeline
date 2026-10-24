@@ -59,7 +59,7 @@ Raw data is never modified: `raw.police_reports` is a faithful copy and all clea
 
 ## Tests
 
-22 dbt tests, all passing: `not_null`, `unique`, `accepted_values`, `relationships`, `dbt_utils.unique_combination_of_columns` (grain checks), `dbt_utils.accepted_range`, and one singular test that checks the enrichment join neither adds nor loses rows.
+28 dbt tests, all passing: `not_null`, `unique`, `accepted_values`, `relationships`, `dbt_utils.unique_combination_of_columns` (grain checks), `dbt_utils.accepted_range`, and one singular test that checks the enrichment join neither adds nor loses rows.
 
 ## Findings
 

@@ -25,6 +25,10 @@ models:
         description: "First day of the month."
         data_tests:
           - not_null
+      - name: province
+        description: "Province in uppercase without accents. DESCONOCIDO when unknown."
+      - name: crime_type_en
+        description: "Crime type in English, from the crime_type_translation seed."
       - name: crime_count
         description: "Reports in that month. Zero when none were reported."
         data_tests:
@@ -40,3 +44,42 @@ models:
         description: "Percent change versus the same month last year. Null when last year had zero reports."
       - name: is_latest_month
         description: "True for the last month in the data. It is incomplete, so exclude it from comparisons."
+
+  - name: fct_crime_rates
+    description: "Reports per 100,000 inhabitants by year, province and crime type. Population is the INEC resident estimate at 30 June of each year."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - year
+              - province
+              - crime_type_en
+    columns:
+      - name: year
+        data_tests:
+          - not_null
+      - name: province
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('province_population')
+                field: province
+              config:
+                where: "province <> 'DESCONOCIDO'"
+      - name: crime_count
+        data_tests:
+          - not_null
+      - name: population
+        description: "Resident population of the province at 30 June of that year. Null for the unknown province."
+        data_tests:
+          - not_null:
+              config:
+                where: "province <> 'DESCONOCIDO'"
+      - name: crimes_per_100k
+        description: "crime_count divided by population, times 100,000. Understated in partial years."
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+      - name: is_partial_year
+        description: "True when the year is incomplete in the data (2026), so its rate is understated."
