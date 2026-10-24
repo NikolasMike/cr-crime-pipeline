@@ -11,3 +11,25 @@ seeds:
       - name: crime_type_en
         data_tests:
           - not_null
+
+  - name: province_population
+    description: "Total population by province at 30 June of each year, 2015-2026. Source: INEC-Costa Rica, Estimaciones y proyecciones subnacionales de poblacion 2000-2050, June 2025. Values from 2025 onward are projections."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - province
+              - year
+    columns:
+      - name: province
+        data_tests:
+          - not_null
+      - name: year
+        data_tests:
+          - not_null
+      - name: population
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 1
