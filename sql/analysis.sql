@@ -56,3 +56,40 @@ SELECT
     ROUND(100.0 * (crimes_2025 - crimes_2015) / crimes_2015, 1) AS change_pct
 FROM by_type
 ORDER BY crimes_2015 DESC;
+
+-- 4. Reports per 100,000 inhabitants by province, 2025 (population-adjusted)
+-- Finding: Puntarenas 945, San Jose 933 (technical tie), Guanacaste 862; Alajuela drops from 2nd (count) to 6th (rate).
+WITH by_province AS (
+    SELECT
+        province,
+        SUM(crime_count) AS crimes,
+        MAX(population)  AS population
+    FROM analytics.fct_crime_rates
+    WHERE year = 2025
+      AND province <> 'DESCONOCIDO'
+    GROUP BY province
+)
+SELECT
+    province,
+    crimes,
+    population,
+    ROUND(100000.0 * crimes / population, 1)                   AS crimes_per_100k,
+    RANK() OVER (ORDER BY crimes DESC)                         AS rank_by_count,
+    RANK() OVER (ORDER BY 100000.0 * crimes / population DESC) AS rank_by_rate
+FROM by_province
+ORDER BY rank_by_rate;
+
+-- 5. Share of foreign victims by province, 2025
+-- Finding: Puntarenas 24.3%, Guanacaste 19.1%, Cartago 5.7%. Tourists appear in reports but not in the resident population.
+SELECT
+    province,
+    COUNT(*) AS reports,
+    ROUND(
+        100.0 * COUNT(*) FILTER (WHERE victim_nationality NOT IN ('COSTA RICA', 'DESCONOCIDO'))
+        / COUNT(*), 1
+    ) AS pct_foreign_victims
+FROM analytics.int_police_reports_enriched
+WHERE report_year = 2025
+  AND province <> 'DESCONOCIDO'
+GROUP BY province
+ORDER BY pct_foreign_victims DESC;
