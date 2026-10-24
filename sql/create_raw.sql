@@ -1,4 +1,4 @@
-git add .CREATE TABLE raw.police_reports (
+CREATE TABLE raw.police_reports (
     crime_type          TEXT,
     modus_operandi      TEXT,
     report_date         TEXT,

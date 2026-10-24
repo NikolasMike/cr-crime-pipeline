@@ -40,8 +40,8 @@ jobs:
 
       - name: Create raw schema and table
         run: |
-          psql -h localhost -U postgres -d crime -c "CREATE SCHEMA raw;"
-          psql -h localhost -U postgres -d crime -f sql/create_raw.sql
+          psql -v ON_ERROR_STOP=1 -h localhost -U postgres -d crime -c "CREATE SCHEMA raw;"
+          psql -v ON_ERROR_STOP=1 -h localhost -U postgres -d crime -f sql/create_raw.sql
 
       - name: Download police statistics
         run: ./scripts/download_police.sh
