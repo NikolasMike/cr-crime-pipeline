@@ -9,7 +9,7 @@ with enriched as (
 monthly as (
 
     select
-        make_date(report_year, report_month, 1) as month_start,
+        {{ make_month_start("report_year", "report_month") }} as month_start,
         report_year,
         report_month,
         province,

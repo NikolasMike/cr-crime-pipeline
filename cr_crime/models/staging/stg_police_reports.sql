@@ -14,9 +14,9 @@ cleaned as (
         upper(trim(victim_subtype)) as victim_subtype,
         upper(trim(victim_age_group)) as victim_age_group,
         upper(trim(victim_nationality)) as victim_nationality,
-        upper(regexp_replace(trim(province), '\s+', ' ', 'g')) as province,
-        upper(regexp_replace(trim(canton), '\s+', ' ', 'g')) as canton,
-        upper(regexp_replace(trim(district), '\s+', ' ', 'g')) as district,
+        upper({{ collapse_whitespace('province') }}) as province,
+        upper({{ collapse_whitespace('canton') }}) as canton,
+        upper({{ collapse_whitespace('district') }}) as district,
         source_year
     from source
 

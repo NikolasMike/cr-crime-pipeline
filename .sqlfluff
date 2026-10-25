@@ -3,3 +3,8 @@ dialect = postgres
 templater = jinja
 max_line_length = 120
 exclude_rules = ST06, RF04
+
+[sqlfluff:templater:jinja:macros]
+collapse_whitespace = {% macro collapse_whitespace(column) %}{{ column }}{% endmacro %}
+make_month_start = {% macro make_month_start(year, month) %}date({{ year }}, {{ month }}, 1){% endmacro %}
+month_series = {% macro month_series(start_col, end_col) %}generate_series({{ start_col }}, {{ end_col }}){% endmacro %}

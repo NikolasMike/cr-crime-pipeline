@@ -3,16 +3,17 @@
 with bounds as (
 
     select
-        cast(date_trunc('month', min(report_date)) as date) as first_month,
-        cast(date_trunc('month', max(report_date)) as date) as last_month
+        cast({{ dbt.date_trunc('month', 'min(report_date)') }} as date) as first_month,
+        cast({{ dbt.date_trunc('month', 'max(report_date)') }} as date) as last_month
     from {{ ref('int_police_reports_enriched') }}
 
 ),
 
 months as (
 
-    select cast(generate_series(first_month, last_month, interval '1 month') as date) as month_start
+    select cast(month_start as date) as month_start
     from bounds
+    cross join {{ month_series('first_month', 'last_month') }} as month_start
 
 ),
 
