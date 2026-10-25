@@ -222,3 +222,6 @@ data/
 cr_crime/logs/
 cr_crime/target/
 cr_crime/dbt_packages/
+
+# Google Cloud credentials
+cr-crime-pipeline-*.json

@@ -38,6 +38,9 @@ jobs:
           pip install uv
           uv sync --locked
 
+      - name: Lint SQL with sqlfluff
+        run: uv run sqlfluff lint cr_crime/models --disable-progress-bar
+
       - name: Create raw schema and table
         run: |
           psql -v ON_ERROR_STOP=1 -h localhost -U postgres -d crime -c "CREATE SCHEMA raw;"
