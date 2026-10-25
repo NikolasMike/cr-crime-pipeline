@@ -14,9 +14,9 @@ enriched as (
 
     select
         reports.report_date,
-        cast(extract(year from reports.report_date) as integer)   as report_year,
-        cast(extract(month from reports.report_date) as integer)  as report_month,
-        reports.crime_type                                        as crime_type_es,
+        cast(extract(year from reports.report_date) as integer) as report_year,
+        cast(extract(month from reports.report_date) as integer) as report_month,
+        reports.crime_type as crime_type_es,
         crime_types.crime_type_en,
         reports.modus_operandi,
         reports.victim_type,

@@ -3,7 +3,7 @@
 with trends as (
 
     select
-        cast(extract(year from month_start) as integer)  as year,
+        cast(extract(year from month_start) as integer) as year,
         province,
         crime_type_en,
         crime_count,
@@ -18,7 +18,7 @@ yearly as (
         year,
         province,
         crime_type_en,
-        sum(crime_count)       as crime_count,
+        sum(crime_count) as crime_count,
         bool_or(is_latest_month) as is_partial_year
     from trends
     group by year, province, crime_type_en
@@ -27,7 +27,10 @@ yearly as (
 
 population as (
 
-    select province, year, population
+    select
+        province,
+        year,
+        population
     from {{ ref('province_population') }}
 
 ),
@@ -44,8 +47,9 @@ final as (
         yearly.is_partial_year
     from yearly
     left join population
-        on  yearly.province = population.province
-        and yearly.year     = population.year
+        on
+            yearly.province = population.province
+            and yearly.year = population.year
 
 )
 

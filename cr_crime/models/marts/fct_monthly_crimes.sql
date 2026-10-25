@@ -9,12 +9,12 @@ with enriched as (
 monthly as (
 
     select
-        make_date(report_year, report_month, 1)  as month_start,
+        make_date(report_year, report_month, 1) as month_start,
         report_year,
         report_month,
         province,
         crime_type_en,
-        count(*)                                 as crime_count
+        count(*) as crime_count
     from enriched
     group by report_year, report_month, province, crime_type_en
 

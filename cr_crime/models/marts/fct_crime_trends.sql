@@ -8,7 +8,11 @@ with grid as (
 
 counts as (
 
-    select month_start, province, crime_type_en, crime_count
+    select
+        month_start,
+        province,
+        crime_type_en,
+        crime_count
     from {{ ref('fct_monthly_crimes') }}
 
 ),
@@ -22,9 +26,10 @@ filled as (
         coalesce(counts.crime_count, 0) as crime_count
     from grid
     left join counts
-        on  grid.month_start   = counts.month_start
-        and grid.province      = counts.province
-        and grid.crime_type_en = counts.crime_type_en
+        on
+            grid.month_start = counts.month_start
+            and grid.province = counts.province
+            and grid.crime_type_en = counts.crime_type_en
 
 ),
 
@@ -55,7 +60,7 @@ final as (
         *,
         case
             when crime_count_prev_year > 0
-            then round(100.0 * (crime_count - crime_count_prev_year) / crime_count_prev_year, 1)
+                then round(100.0 * (crime_count - crime_count_prev_year) / crime_count_prev_year, 1)
         end as yoy_change_pct
     from with_windows
 

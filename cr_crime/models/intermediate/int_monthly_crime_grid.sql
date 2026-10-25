@@ -3,8 +3,8 @@
 with bounds as (
 
     select
-        cast(date_trunc('month', min(report_date)) as date)  as first_month,
-        cast(date_trunc('month', max(report_date)) as date)  as last_month
+        cast(date_trunc('month', min(report_date)) as date) as first_month,
+        cast(date_trunc('month', max(report_date)) as date) as last_month
     from {{ ref('int_police_reports_enriched') }}
 
 ),
