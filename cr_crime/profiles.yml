@@ -1,7 +1,7 @@
 cr_crime:
-  target: dev
+  target: pg
   outputs:
-    dev:
+    pg:
       type: postgres
       host: localhost
       port: 5432
@@ -9,4 +9,12 @@ cr_crime:
       password: postgres
       dbname: crime
       schema: analytics
+      threads: 4
+    bq_dev:
+      type: bigquery
+      method: service-account
+      project: cr-crime-pipeline
+      dataset: analytics_dev
+      location: US
+      keyfile: "{{ env_var('GCP_KEYFILE', '/home/codespace/.gcp/dbt-runner.json') }}"
       threads: 4
