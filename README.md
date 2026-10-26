@@ -4,7 +4,7 @@
 
 **Live documentation (dbt docs, with the lineage graph):** https://nikolasmike.github.io/cr-crime-pipeline/
 
-An end-to-end ELT pipeline built on Costa Rica's open police statistics (2015-2026): raw CSVs loaded into PostgreSQL, modelled with dbt in layers (staging, intermediate, marts), tested, documented, and analysed with window functions.
+An end-to-end ELT pipeline built on Costa Rica's open police statistics (2015-2026): raw CSVs loaded into PostgreSQL or BigQuery, modelled with dbt in layers (staging, intermediate, marts), tested, documented, linted, deployed with CI/CD, and analysed with window functions.
 
 I built it to practise the full analytics engineering workflow on real, messy public data, not to produce a polished dataset.
 
@@ -17,7 +17,7 @@ I built it to practise the full analytics engineering workflow on real, messy pu
 
 ## Stack
 
-PostgreSQL 16, Python 3.12 (uv, psycopg2), dbt-postgres 1.12, dbt_utils, Bash.
+PostgreSQL 16 (local and CI), Google BigQuery (prod), Python 3.12 (uv, psycopg2, google-cloud-bigquery), dbt-postgres and dbt-bigquery 1.12, dbt_utils, sqlfluff, GitHub Actions, Bash.
 
 ## Architecture
 
@@ -62,6 +62,19 @@ Raw data is never modified: `raw.police_reports` is a faithful copy and all clea
 ## Tests
 
 28 dbt tests, all passing: `not_null`, `unique`, `accepted_values`, `relationships`, `dbt_utils.unique_combination_of_columns` (grain checks), `dbt_utils.accepted_range`, and one singular test that checks the enrichment join neither adds nor loses rows.
+
+## CI/CD and multi-warehouse
+
+Every push to `main` runs a GitHub Actions workflow:
+
+1. **Lint** the SQL with sqlfluff.
+2. **Build and test** everything on PostgreSQL 16 (seeds, models and all tests).
+3. **Publish** the dbt docs to GitHub Pages.
+4. **Deploy to BigQuery**: load the raw data, then `dbt build --target bq_prod` (tests included).
+
+The same dbt project runs on both warehouses. Where SQL differs (`regexp_replace`, `make_date`, `generate_series`, `bool_or`, `date_trunc`), small macros in `cr_crime/macros/` use `adapter.dispatch` to pick the right syntax for each engine. Targets: `pg` (local default), `bq_dev` (dataset `analytics_dev`) and `bq_prod` (dataset `analytics`). BigQuery credentials are a service account key stored as a GitHub secret, never in the repo.
+
+The free BigQuery sandbox has limits: no DML (so no incremental models or snapshots) and tables expire after 60 days.
 
 ## Findings
 
@@ -116,6 +129,8 @@ cr_crime/                     dbt project (models, seeds, tests)
 
 ## Next steps
 
+- Orchestrate the pipeline with Airflow (scheduled runs, so BigQuery tables never expire).
+- Dashboard in Looker Studio on top of the BigQuery marts.
 - Rates per canton (INEC also publishes canton-level population) and a tourism-adjusted denominator.
 - Use the larger Poder Judicial datasets (judicial case duration, notifications) in a local DuckDB setup.
 
