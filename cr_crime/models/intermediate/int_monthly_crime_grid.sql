@@ -3,8 +3,8 @@
 with bounds as (
 
     select
-        cast({{ dbt.date_trunc('month', 'min(report_date)') }} as date) as first_month,
-        cast({{ dbt.date_trunc('month', 'max(report_date)') }} as date) as last_month
+        cast({{ trunc_to_month('min(report_date)') }} as date) as first_month,
+        cast({{ trunc_to_month('max(report_date)') }} as date) as last_month
     from {{ ref('int_police_reports_enriched') }}
 
 ),

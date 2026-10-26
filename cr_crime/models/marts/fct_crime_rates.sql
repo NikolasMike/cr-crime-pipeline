@@ -19,7 +19,7 @@ yearly as (
         province,
         crime_type_en,
         sum(crime_count) as crime_count,
-        bool_or(is_latest_month) as is_partial_year
+        {{ logical_or("is_latest_month") }} as is_partial_year
     from trends
     group by year, province, crime_type_en
 

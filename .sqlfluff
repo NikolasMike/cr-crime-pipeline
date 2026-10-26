@@ -8,3 +8,5 @@ exclude_rules = ST06, RF04
 collapse_whitespace = {% macro collapse_whitespace(column) %}{{ column }}{% endmacro %}
 make_month_start = {% macro make_month_start(year, month) %}date({{ year }}, {{ month }}, 1){% endmacro %}
 month_series = {% macro month_series(start_col, end_col) %}generate_series({{ start_col }}, {{ end_col }}){% endmacro %}
+trunc_to_month = {% macro trunc_to_month(date_expr) %}date_trunc('month', {{ date_expr }}){% endmacro %}
+logical_or = {% macro logical_or(column) %}bool_or({{ column }}){% endmacro %}
