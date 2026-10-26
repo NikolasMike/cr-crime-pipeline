@@ -4,6 +4,8 @@
 
 **Live documentation (dbt docs, with the lineage graph):** https://nikolasmike.github.io/cr-crime-pipeline/
 
+**Live dashboard (Google Data Studio, reading the BigQuery marts):** https://datastudio.google.com/reporting/2851fa80-44a9-4064-b639-cb04a3817bde
+
 An end-to-end ELT pipeline built on Costa Rica's open police statistics (2015-2026): raw CSVs loaded into PostgreSQL or BigQuery, modelled with dbt in layers (staging, intermediate, marts), tested, documented, linted, deployed with CI/CD, and analysed with window functions.
 
 I built it to practise the full analytics engineering workflow on real, messy public data, not to produce a polished dataset.
@@ -17,7 +19,7 @@ I built it to practise the full analytics engineering workflow on real, messy pu
 
 ## Stack
 
-PostgreSQL 16 (local and CI), Google BigQuery (prod), Python 3.12 (uv, psycopg2, google-cloud-bigquery), dbt-postgres and dbt-bigquery 1.12, dbt_utils, sqlfluff, GitHub Actions, Bash.
+PostgreSQL 16 (local and CI), Google BigQuery (prod), Google Data Studio, Python 3.12 (uv, psycopg2, google-cloud-bigquery), dbt-postgres and dbt-bigquery 1.12, dbt_utils, sqlfluff, GitHub Actions, Bash.
 
 ## Architecture
 
@@ -130,7 +132,6 @@ cr_crime/                     dbt project (models, seeds, tests)
 ## Next steps
 
 - Orchestrate the pipeline with Airflow (scheduled runs, so BigQuery tables never expire).
-- Dashboard in Looker Studio on top of the BigQuery marts.
 - Rates per canton (INEC also publishes canton-level population) and a tourism-adjusted denominator.
 - Use the larger Poder Judicial datasets (judicial case duration, notifications) in a local DuckDB setup.
 
