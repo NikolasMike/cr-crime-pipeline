@@ -18,3 +18,11 @@ cr_crime:
       location: US
       keyfile: "{{ env_var('GCP_KEYFILE', '/home/codespace/.gcp/dbt-runner.json') }}"
       threads: 4
+    bq_prod:
+      type: bigquery
+      method: service-account
+      project: cr-crime-pipeline
+      dataset: analytics
+      location: US
+      keyfile: "{{ env_var('GCP_KEYFILE', '/home/codespace/.gcp/dbt-runner.json') }}"
+      threads: 4

@@ -89,3 +89,38 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  deploy-bigquery:
+    needs: dbt-build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv and dependencies
+        run: |
+          pip install uv
+          uv sync --locked
+
+      - name: Write GCP credentials
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          printf '%s' "$GCP_SA_KEY" > "$RUNNER_TEMP/gcp-key.json"
+          echo "GCP_KEYFILE=$RUNNER_TEMP/gcp-key.json" >> "$GITHUB_ENV"
+
+      - name: Download police statistics
+        run: bash scripts/download_police.sh
+
+      - name: Load raw data into BigQuery
+        run: uv run python src/load_raw_bq.py
+
+      - name: Build dbt project in BigQuery (prod)
+        working-directory: cr_crime
+        run: |
+          uv run dbt deps
+          uv run dbt build --target bq_prod
