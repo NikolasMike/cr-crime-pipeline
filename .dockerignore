@@ -1,0 +1,8 @@
+.git
+.venv
+data
+cr_crime/target
+cr_crime/dbt_packages
+cr_crime/logs
+orchestration/logs
+orchestration/.env

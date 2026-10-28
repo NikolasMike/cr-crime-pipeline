@@ -225,3 +225,8 @@ cr_crime/dbt_packages/
 
 # Google Cloud credentials
 cr-crime-pipeline-*.json
+
+# Airflow
+orchestration/.env
+orchestration/logs/
+orchestration/config/airflow.cfg
