@@ -42,4 +42,7 @@ job_config = bigquery.LoadJobConfig(
 data = io.BytesIO(buf.getvalue().encode("utf-8"))
 client.load_table_from_file(data, TABLE, job_config=job_config).result()
 
-print("TOTAL prepared", total, "| in BigQuery", client.get_table(TABLE).num_rows)
+loaded = client.get_table(TABLE).num_rows
+print("TOTAL prepared", total, "| in BigQuery", loaded)
+if loaded != total:
+    raise SystemExit(f"Row count mismatch: prepared {total}, loaded {loaded}")
