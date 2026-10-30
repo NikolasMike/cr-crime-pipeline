@@ -23,4 +23,8 @@ for path in csv_paths():
     total += len(rows)
 
 conn.commit()
-print("TOTAL", total)
+cur.execute("SELECT count(*) FROM raw.police_reports")
+loaded = cur.fetchone()[0]
+print("TOTAL", total, "| in table", loaded)
+if loaded != total:
+    raise SystemExit(f"Row count mismatch: read {total}, loaded {loaded}")
