@@ -230,3 +230,6 @@ cr-crime-pipeline-*.json
 orchestration/.env
 orchestration/logs/
 orchestration/config/airflow.cfg
+
+# dbt anonymous usage file
+.user.yml

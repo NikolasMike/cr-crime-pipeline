@@ -86,7 +86,7 @@ Queries are in `sql/analysis.sql`. Full years only (2015-2025).
 2. **San Jose concentrates 39% of reports in 2025**, followed by Alajuela (15.5%) and Puntarenas (12.1%). These are counts, not rates.
 3. **Property crimes fell, homicides rose.** Theft -34%, robbery -36%, burglary -42%, vehicle break-in -9%; vehicle theft +32% and homicides +73% (575 to 997) between 2015 and 2025.
 
-4. **Adjusted for population, Puntarenas has the highest rate in 2025** (945 reports per 100,000 inhabitants), technically tied with San Jose (933) and followed by Guanacaste (862). Alajuela drops from 2nd by count to 6th by rate (568) and Cartago is the lowest (532). The provinces with the highest rates also have the highest share of foreign victims (Puntarenas 24%, Guanacaste 19%, Cartago 6%), which suggests tourists inflate the rates because the INEC population only counts residents.
+4. **Adjusted for population, Puntarenas has the highest rate in 2025** (945 reports per 100,000 inhabitants), barely ahead of San Jose (933) and followed by Guanacaste (862). Alajuela drops from 2nd by count to 6th by rate (568) and Cartago is the lowest (532). The provinces with the highest rates also have the highest share of foreign victims (Puntarenas 24%, Guanacaste 19%, Cartago 6%), which suggests tourists inflate the rates because the INEC population only counts residents.
 
 A possible reading of (3): homicide is the crime least dependent on a victim choosing to report it, so its rise is a more reliable signal than the fall in thefts, which may partly reflect people reporting less. These data suggest this but cannot prove it.
 
