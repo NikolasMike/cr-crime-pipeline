@@ -102,6 +102,7 @@ A possible reading of (3): homicide is the crime least dependent on a victim cho
 ## How to reproduce
 
 ```bash
+export PGPASSWORD=postgres   # read by profiles.yml (throwaway local database)
 sudo service postgresql start
 psql -U postgres -c "CREATE DATABASE crime;"
 psql -U postgres -d crime -c "CREATE SCHEMA raw;"
@@ -117,7 +118,7 @@ uv run dbt build          # seeds, models and tests
 uv run dbt docs generate && uv run dbt docs serve --port 8080
 ```
 
-`cr_crime/profiles.yml` contains a local-only password for a throwaway development database. Use environment variables for anything real.
+`cr_crime/profiles.yml` reads credentials from environment variables: `PGPASSWORD` for PostgreSQL (the value above is for a throwaway local database) and `GCP_KEYFILE` for BigQuery (path to a service account key, default `~/.gcp/dbt-runner.json`). To build in BigQuery instead, load the raw table with `uv run python src/load_raw_bq.py` and run `uv run dbt build --target bq_dev`.
 
 ## Repository structure
 
