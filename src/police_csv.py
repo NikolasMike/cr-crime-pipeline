@@ -18,8 +18,7 @@ def read_year_file(path):
     with open(path, encoding="latin1", newline="") as f:
         for row in csv.reader(f):
             if len(row) < EXPECTED_COLS:
-                print(f"  {year}: SKIPPED short row ({len(row)} fields): {row}")
-                continue
+                raise ValueError(f"{path}: row with {len(row)} fields (expected {EXPECTED_COLS}): {row}")
             if len(row) > EXPECTED_COLS:
                 print(f"  {year}: fixing row with {len(row)} fields: {row}")
                 extra = len(row) - EXPECTED_COLS
