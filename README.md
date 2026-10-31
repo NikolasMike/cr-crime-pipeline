@@ -128,6 +128,7 @@ A possible reading of (3): homicide is the crime least dependent on a victim cho
 - The English crime-type labels are approximations of legal categories (e.g. `ROBO` -> Burglary, `ASALTO` -> Robbery), kept in a seed so they are easy to review.
 - `modus_operandi` has overlapping categories (e.g. "POR DESCUIDO" and "DESCUIDO") that were not harmonised.
 - Month-level counts for small groups (e.g. homicides in one province) are very volatile; avoid reading single-month changes as trends.
+- Homicide counts are higher than the official OIJ figures: this dataset has 1,008 homicide reports in 2023 and 997 in 2025, against 907 and 873 intentional homicides published by the OIJ (11% and 14% more). Breaking the reports down by `modus_operandi` does not isolate the gap, so the exact cause is unknown; possible causes are differences in what is counted or in the definition of the category. Use these counts to compare years, not as official totals.
 
 ## How to reproduce
 
