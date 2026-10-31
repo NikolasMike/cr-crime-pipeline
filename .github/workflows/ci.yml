@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   pull_request:
+  schedule:
+    - cron: '0 12 1 * *'  # 1st of every month, 12:00 UTC (06:00 Costa Rica)
+  workflow_dispatch:
 
 jobs:
   dbt-build:
@@ -95,7 +98,7 @@ jobs:
     concurrency:
       group: bigquery-prod-deploy
       cancel-in-progress: false
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
