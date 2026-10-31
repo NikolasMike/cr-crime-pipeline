@@ -83,3 +83,32 @@ models:
                 min_value: 0
       - name: is_partial_year
         description: "True when the year is incomplete in the data (2026), so its rate is understated."
+
+  - name: fct_national_crime_rates
+    description: "Reports per 100,000 inhabitants by year and crime type for the whole country. Computed from summed counts over summed population, not by adding province rates. Reports with an unknown province are excluded because they have no population."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - year
+              - crime_type_en
+    columns:
+      - name: year
+        data_tests:
+          - not_null
+      - name: crime_count
+        data_tests:
+          - not_null
+      - name: population
+        description: "Sum of the resident population of all provinces at 30 June of that year."
+        data_tests:
+          - not_null
+      - name: crimes_per_100k
+        description: "crime_count divided by population, times 100,000, rounded once at the end. Understated in partial years."
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+      - name: is_partial_year
+        description: "True when the year is incomplete in the data (2026), so its rate is understated."
