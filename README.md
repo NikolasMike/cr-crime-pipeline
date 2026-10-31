@@ -63,7 +63,7 @@ Raw data is never modified: `raw.police_reports` is a faithful copy and all clea
 
 ## Tests
 
-29 dbt tests, all passing: `not_null`, `unique`, `accepted_values`, `relationships`, `dbt_utils.unique_combination_of_columns` (grain checks), `dbt_utils.accepted_range`, and two singular tests: the enrichment join neither adds nor loses rows, and each yearly file only contains reports dated in that year.
+35 dbt tests, all passing: `not_null`, `unique`, `accepted_values`, `relationships`, `dbt_utils.unique_combination_of_columns` (grain checks), `dbt_utils.accepted_range`, and two singular tests: the enrichment join neither adds nor loses rows, and each yearly file only contains reports dated in that year.
 
 ## CI/CD and multi-warehouse
 
@@ -114,7 +114,7 @@ Queries are in `sql/analysis.sql`. Full years only (2015-2025).
 
 1. **Total reports peaked in 2018** (61,464), fell 33% in 2020 (pandemic), rebounded 21% in 2022, and have declined every year since (39,388 in 2025).
 2. **San Jose concentrates 39% of reports in 2025**, followed by Alajuela (15.5%) and Puntarenas (12.1%). These are counts, not rates.
-3. **Property crimes fell, homicides rose.** Theft -34%, robbery -36%, burglary -42%, vehicle break-in -9%; vehicle theft +32% and homicides +73% (575 to 997) between 2015 and 2025.
+3. **Property crimes fell, homicides rose.** Theft -34%, robbery -36%, burglary -42%, vehicle break-in -9%; vehicle theft +32% and homicides +73% (575 to 997; 11.9 to 19.2 per 100,000 inhabitants) between 2015 and 2025.
 
 4. **Adjusted for population, Puntarenas has the highest rate in 2025** (945 reports per 100,000 inhabitants), barely ahead of San Jose (933) and followed by Guanacaste (862). Alajuela drops from 2nd by count to 6th by rate (568) and Cartago is the lowest (532). The provinces with the highest rates also have the highest share of foreign victims (Puntarenas 24%, Guanacaste 19%, Cartago 6%), which suggests tourists inflate the rates because the INEC population only counts residents.
 
