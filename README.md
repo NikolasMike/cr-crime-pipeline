@@ -78,6 +78,36 @@ The same dbt project runs on both warehouses. Where SQL differs (`regexp_replace
 
 The free BigQuery sandbox has limits: no DML (so no incremental models or snapshots) and tables expire after 60 days.
 
+## Orchestration (Airflow)
+
+`orchestration/` runs the pipeline with Apache Airflow 3 (Docker Compose, LocalExecutor). The `cr_crime_pipeline` DAG runs monthly:
+
+```
+download → load_raw_bigquery → dbt_deps → dbt_build (bq_prod)
+```
+
+- The Airflow image is built from the repo's `uv.lock`, so dbt and the loaders use the same pinned versions as local development and CI (separate virtualenv in `/opt/pipeline/.venv`).
+- The repo and the BigQuery service account key are mounted into the containers (the key read-only); no secret is copied into the image.
+- Network tasks retry twice, five minutes apart. `dbt_build` does not retry, so a failing test shows up right away.
+- A full run takes about 2 minutes.
+
+To run it locally you need Docker and the service account key at `~/.gcp/dbt-runner.json`:
+
+```bash
+cd orchestration
+cat > .env <<EOF
+AIRFLOW_UID=$(id -u)
+AIRFLOW_IMAGE_NAME=cr-crime-airflow:3.3.2
+FERNET_KEY=$(openssl rand -base64 32 | tr '+/' '-_')
+AIRFLOW__API_AUTH__JWT_SECRET=$(openssl rand -hex 32)
+EOF
+docker compose build airflow-apiserver
+docker compose up airflow-init
+docker compose up -d
+```
+
+Open http://localhost:8080 (user and password `airflow`) and trigger `cr_crime_pipeline`.
+
 ## Findings
 
 Queries are in `sql/analysis.sql`. Full years only (2015-2025).
