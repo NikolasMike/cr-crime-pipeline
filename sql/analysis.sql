@@ -44,8 +44,8 @@ ORDER BY crime_rank;
 WITH by_type AS (
     SELECT
         crime_type_en,
-        SUM(crime_count) FILTER (WHERE month_start >= '2015-01-01' AND month_start < '2016-01-01') AS crimes_2015,
-        SUM(crime_count) FILTER (WHERE month_start >= '2025-01-01' AND month_start < '2026-01-01') AS crimes_2025
+        SUM(CASE WHEN month_start >= '2015-01-01' AND month_start < '2016-01-01' THEN crime_count END) AS crimes_2015,
+        SUM(CASE WHEN month_start >= '2025-01-01' AND month_start < '2026-01-01' THEN crime_count END) AS crimes_2025
     FROM analytics.fct_crime_trends
     GROUP BY crime_type_en
 )
@@ -58,7 +58,7 @@ FROM by_type
 ORDER BY crimes_2015 DESC;
 
 -- 4. Reports per 100,000 inhabitants by province, 2025 (population-adjusted)
--- Finding: Puntarenas 945, San Jose 933 (technical tie), Guanacaste 862; Alajuela drops from 2nd (count) to 6th (rate).
+-- Finding: Puntarenas 945, barely ahead of San Jose (933), Guanacaste 862; Alajuela drops from 2nd (count) to 6th (rate).
 WITH by_province AS (
     SELECT
         province,
@@ -85,7 +85,7 @@ SELECT
     province,
     COUNT(*) AS reports,
     ROUND(
-        100.0 * COUNT(*) FILTER (WHERE victim_nationality NOT IN ('COSTA RICA', 'DESCONOCIDO'))
+        100.0 * COUNT(CASE WHEN victim_nationality NOT IN ('COSTA RICA', 'DESCONOCIDO') THEN 1 END)
         / COUNT(*), 1
     ) AS pct_foreign_victims
 FROM analytics.int_police_reports_enriched
