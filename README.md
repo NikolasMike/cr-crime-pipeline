@@ -108,6 +108,30 @@ docker compose up -d
 
 Open http://localhost:8080 (user and password `airflow`) and trigger `cr_crime_pipeline`.
 
+## Infrastructure (Terraform)
+
+`terraform/` describes the Google Cloud pieces the pipeline depends on, so they can be reviewed and recreated from code:
+
+- The three BigQuery datasets (`raw`, `analytics_dev`, `analytics`), with the 60-day expiration that the sandbox enforces.
+- The `dbt-runner` service account and its two roles (`bigquery.dataEditor` and `bigquery.jobUser`).
+
+Decisions made on purpose:
+
+- The service account key is created and rotated by hand. If Terraform created it, the key would be stored in plain text in the state file.
+- The state is local and not committed. Remote state needs a bucket, which needs a billing account, and this project runs in the BigQuery sandbox.
+- CI only runs `terraform fmt -check` and `terraform validate`. Nothing is applied from CI, so GitHub never holds credentials with admin permissions.
+
+These resources existed before Terraform, so they were adopted with `import` blocks and `terraform plan` reports no changes. To check it against the project:
+
+```bash
+gcloud auth login --update-adc
+cd terraform
+terraform init
+terraform plan
+```
+
+Because the state is local, a fresh clone starts with an empty state: the existing resources would have to be imported again before `plan` is meaningful.
+
 ## Findings
 
 Queries are in `sql/analysis.sql`. Full years only (2015-2025).
