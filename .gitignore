@@ -233,3 +233,9 @@ orchestration/config/airflow.cfg
 
 # dbt anonymous usage file
 .user.yml
+
+# Terraform: state can hold secrets, never commit it
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/*.tfvars
